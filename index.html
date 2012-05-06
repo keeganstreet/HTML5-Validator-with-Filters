@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Living Validator with Filters</title>
+		<link href="http://validator.nu/icon.png" rel="icon">
+		<link href="http://validator.nu/style.css" rel="stylesheet">
+		<style>
+			#welcome, #summary {
+				background: #B8F55D;
+				padding: 0.5em;
+				margin-bottom: 0.67em;
+			}
+			#welcome > p, #summary > p {
+				font-size: 1.1em;
+			}
+			#welcome-more {
+				display: none;
+			}
+			#summary fieldset:first-of-type {
+				margin-bottom: 1em;
+			}
+			#summary input {
+				margin-right: 5px;
+			}
+			#summary label {
+				display: block;
+			}
+			#num-errors {
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				font-size: 100px;
+				text-align: right;
+				font-weight: bold;
+				text-shadow: 0px 0px 10px #000;
+				color: #FFF;
+				display: none;
+				opacity: 0.5;
+			}
+			.hidden {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="num-errors">200</div>
+		<div id="welcome">
+			<p>Welcome to the Living Validator <em>with filters</em>. Validate your HTML5 documents and filter the error messages. Validator by <a href="http://validator.nu">Validator.nu</a>. Filtering added by <a href="http://twitter.com/kstre">Keegan Street</a>. <a href="#" id="read-more">Read more</a>.<p>
+			<div id="welcome-more">
+				<p>Some HTML errors are outside of the control of web developers. For example some frameworks and content management systems generate invalid HTML by adding obsolete elements or attributes. This validator lets you filter out these errors so that you can focus on the errors that you do have control over. Using filters effectively will ensure that the errors you need to know about don't get lost in the noise of framework/CMS errors.</p>
+				<p>The validation for this service is completely handled by <a href="http://validator.nu">Validator.nu</a>. The validator is loaded with AJAX and filtering is added in as a layer on top with JavaScript. HTML5 local storage is used to remember your filtering preferences so you don't need to re-apply the same filters on every page.</p>
+			</div>
+		</div>
+		<div id="validator-nu"></div>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js"><\/script>')</script>
+		<script src="js/validator.js"></script>
+		<script>
+			var _gaq=[['_setAccount','UA-2218289-1'],['_trackPageview']];
+			(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+			g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+			s.parentNode.insertBefore(g,s)}(document,'script'));
+  		  </script>
+	</body>
+</html>
