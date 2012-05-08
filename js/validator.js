@@ -218,13 +218,16 @@ $(document).ready(function() {
 				$messages.each(function() {
 					var $message = $(this),
 						uniqueMessage = $message.find('p:eq(0) > span').text(),
-						messageGroup = $message.find('p:eq(0) > span').clone().find('code').text('___').end().text();
+						$messageGroupEl = $message.find('p:eq(0) > span').clone().find('code').text('___').end(),
+						messageGroup = $messageGroupEl.text(),
+						messageGroupHTML = $messageGroupEl.html();
 
 					if (!messages.hasOwnProperty(messageGroup)) {
 						messages[messageGroup] = {
 							messageCollection: [],
 							uniqueMessages: {},
-							uniqueMessagesLength: 0
+							uniqueMessagesLength: 0,
+							messageGroupHTML: messageGroupHTML
 						};
 					}
 					messages[messageGroup].messageCollection.push($message);
@@ -263,7 +266,7 @@ $(document).ready(function() {
 
 						if (messages[messageGroup].uniqueMessagesLength > 1) {
 							$('<li></li>')
-								.text(messageGroup + ' (' + messages[messageGroup].messageCollection.length.toString() + ') · ')
+								.html(messages[messageGroup].messageGroupHTML + ' (' + messages[messageGroup].messageCollection.length.toString() + ') · ')
 								.append('<a href="#" class="hide">Hide all</a>')
 								.append(' · ')
 								.append('<a href="#" class="show">Show all</a>')
