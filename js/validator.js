@@ -51,7 +51,7 @@ $(document).ready(function() {
 				setupForm();
 			},
 			error: function() {
-				alert('Error contacting ' + nuURL);
+				alert('Error contacting ' + nuURL + '. Your browser may not support Cross-Origin Resource Sharing.');
 			}
 		});
 
@@ -160,84 +160,119 @@ $(document).ready(function() {
 			}
 		});
 
+		$summary.on('click', 'a.hide', function(e) {
+			e.preventDefault();
+			$(this).closest('fieldset, li').find('input[type=checkbox]').removeAttr('checked').trigger('change', ['triggered']);
+			updateNumErrors();
+		});
+
+		$summary.on('click', 'a.show', function(e) {
+			e.preventDefault();
+			$(this).closest('fieldset, li').find('input[type=checkbox]').attr('checked', 'checked').trigger('change', ['triggered']);
+			updateNumErrors();
+		});
+
 		// Generate errors fieldset and warnings fieldset
 		makeFieldset = function($messages, displayType) {
 			var $fieldset,
-				$hideAll,
-				$showAll,
+				$messageList,
+				$messageGroupList,
 				$checkbox,
 				messages = {},
 				messagesSorted = [],
 				type = displayType.toLowerCase(),
-				messageName,
-				messageCollection,
-				i,
-				len;
+				messageGroup,
+				uniqueMessage,
+				makeCheckbox;
+
+			makeCheckbox = function(messageName, messageCollection) {
+				var $checkbox,
+					$label;
+
+				$checkbox = $('<input type="checkbox" checked="checked" />')
+					.data('messageName', messageName)
+					.data('messageCollection', messageCollection)
+					.data('type', type);
+
+				$label = $('<label></label>')
+					.text(messageName + ' (' + messageCollection.length.toString() + ')')
+					.prepend($checkbox);
+
+				// Restore saved checkbox value from local storage
+				if (supportsLocalStorage()) {
+					if (localStorage.hasOwnProperty(type + ':' + messageName) && localStorage[type + ':' + messageName] === 'false') {
+						$checkbox.removeAttr('checked');
+						$.each(messageCollection, function(index, $message) {
+							$message.addClass('hidden');
+						});
+					}
+				}
+
+				return $('<li></li>').append($label);
+			};
 
 			if ($messages.length > 0) {
 
 				// Find the unique messages
 				$messages.each(function() {
 					var $message = $(this),
-						messageName = $message.find('p:eq(0) > span').text();
-					if (!messages.hasOwnProperty(messageName)) {
-						messages[messageName] = [];
-					}
-					messages[messageName].push($message);
-				});
+						uniqueMessage = $message.find('p:eq(0) > span').text(),
+						messageGroup = $message.find('p:eq(0) > span').clone().find('code').text('___').end().text();
 
-				// Sort messages by number of occurrences
-				for (messageName in messages) {
-					if (messages.hasOwnProperty(messageName)) {
-						messagesSorted.push({'messageName': messageName, 'messageCollection': messages[messageName]});
+					if (!messages.hasOwnProperty(messageGroup)) {
+						messages[messageGroup] = {
+							messageCollection: [],
+							uniqueMessages: {},
+							uniqueMessagesLength: 0
+						};
 					}
-				}
-				messagesSorted.sort(function(a, b) {
-					return b.messageCollection.length - a.messageCollection.length;
+					messages[messageGroup].messageCollection.push($message);
+
+					if (!messages[messageGroup].uniqueMessages.hasOwnProperty(uniqueMessage)) {
+						messages[messageGroup].uniqueMessages[uniqueMessage] = [];
+						messages[messageGroup].uniqueMessagesLength += 1;
+					}
+					messages[messageGroup].uniqueMessages[uniqueMessage].push($message);
 				});
 
 				// Generate Hide/Show All buttons
-				$fieldset = $('<fieldset></fieldset>');
-				$hideAll = $('<a href="#">Hide all ' + type + '</a>').on('click', function(e) {
-					e.preventDefault();
-					$fieldset.find('input[type=checkbox]').removeAttr('checked').trigger('change', ['triggered']);
-					updateNumErrors();
-				});
-				$showAll = $('<a href="#">Show all ' + type + '</a>').on('click', function(e) {
-					e.preventDefault();
-					$fieldset.find('input[type=checkbox]').attr('checked', 'checked').trigger('change', ['triggered']);
-					updateNumErrors();
-				});
-				$fieldset.append(
-					$('<legend>' + displayType + ' (' + messagesSorted.length.toString() + ' unique, ' + $messages.length.toString() + ' total) · </legend>')
-						.append($hideAll).append(' · ').append($showAll)
+				$fieldset = $('<fieldset></fieldset>').append(
+					$('<legend>' + displayType + ' · </legend>')
+						.append($('<a href="#" class="hide">Hide all ' + type + '</a>'))
+						.append(' · ')
+						.append($('<a href="#" class="show">Show all ' + type + '</a>'))
 				);
+				$messageList = $('<ol></ol>');
 
-				for (i = 0, len = messagesSorted.length; i < len; i += 1) {
-					messageName = messagesSorted[i].messageName;
-					messageCollection = messagesSorted[i].messageCollection;
+				for (messageGroup in messages) {
+					if (messages.hasOwnProperty(messageGroup)) {
 
-					$checkbox = $('<input type="checkbox" checked="checked" />')
-						.data('messageName', messageName)
-						.data('messageCollection', messageCollection)
-						.data('type', type);
+						$messageGroupList = $('<ol></ol>');
 
-					// Restore saved checkbox value from local storage
-					if (supportsLocalStorage()) {
-						if (localStorage.hasOwnProperty(type + ':' + messageName) && localStorage[type + ':' + messageName] === 'false') {
-							$checkbox.removeAttr('checked');
-							$.each(messageCollection, function(index, $message) {
-								$message.addClass('hidden');
-							});
+						for (uniqueMessage in messages[messageGroup].uniqueMessages) {
+							if (messages[messageGroup].uniqueMessages.hasOwnProperty(uniqueMessage)) {
+								$checkbox = makeCheckbox(uniqueMessage, messages[messageGroup].uniqueMessages[uniqueMessage]);
+								if (messages[messageGroup].uniqueMessagesLength === 1) {
+									$messageList.append($checkbox);
+								} else {
+									$messageGroupList.append($checkbox);
+								}
+							}
+						}
+
+						if (messages[messageGroup].uniqueMessagesLength > 1) {
+							$('<li></li>')
+								.text(messageGroup + ' (' + messages[messageGroup].messageCollection.length.toString() + ') · ')
+								.append('<a href="#" class="hide">Hide all</a>')
+								.append(' · ')
+								.append('<a href="#" class="show">Show all</a>')
+								.append($messageGroupList)
+								.appendTo($messageList);
 						}
 					}
-
-					$fieldset.append(
-						$('<label></label>').text(messageName + ' (' + messageCollection.length.toString() + ')').prepend($checkbox)
-					);
 				}
 
-				$summary.append($fieldset);
+				$summary.append($fieldset.append($messageList));
 			}
 		};
 		makeFieldset($errors, 'Errors');

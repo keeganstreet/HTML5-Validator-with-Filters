@@ -26,6 +26,27 @@
 			#summary label {
 				display: block;
 			}
+			#summary ol {
+				counter-reset: item;
+				margin: 0;
+			}
+			#summary ol ol {
+				margin-top: 4px;
+			}
+			#summary li {
+				list-style-type: none;
+				padding: 0;
+				margin: 4px 0 0;
+			}
+			#summary li li {
+				margin: 0;
+			}
+			#summary li:before {
+				content: counters(item, ".") " ";
+				counter-increment: item;
+				float: left;
+				margin-right: 5px;
+			}
 			#num-errors {
 				position: fixed;
 				top: 20px;
