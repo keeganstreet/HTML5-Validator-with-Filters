@@ -187,7 +187,8 @@ $(document).ready(function() {
 
 			makeCheckbox = function(messageName, messageCollection) {
 				var $checkbox,
-					$label;
+					$label,
+					messageHTML = messageCollection[0].find('p:eq(0) > span').html();
 
 				$checkbox = $('<input type="checkbox" checked="checked" />')
 					.data('messageName', messageName)
@@ -195,7 +196,7 @@ $(document).ready(function() {
 					.data('type', type);
 
 				$label = $('<label></label>')
-					.text(messageName + ' (' + messageCollection.length.toString() + ')')
+					.html(messageHTML + ' (' + messageCollection.length.toString() + ')')
 					.prepend($checkbox);
 
 				// Restore saved checkbox value from local storage
