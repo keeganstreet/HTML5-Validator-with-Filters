@@ -21,22 +21,23 @@
 				margin-bottom: 1em;
 			}
 			#summary input {
-				margin-right: 5px;
-			}
-			#summary label {
-				display: block;
+				position: absolute;
+				top: 0;
+				left: 0;
 			}
 			#summary ol {
 				counter-reset: item;
 				margin: 0;
+				padding-left: 40px;
 			}
 			#summary ol ol {
-				margin-top: 4px;
+				margin-top: 6px;
 			}
 			#summary li {
 				list-style-type: none;
-				padding: 0;
-				margin: 4px 0 0;
+				padding: 0 0 0 25px;
+				margin: 6px 0 0;
+				position: relative;
 			}
 			#summary li li {
 				margin: 0;
@@ -44,8 +45,12 @@
 			#summary li:before {
 				content: counters(item, ".") " ";
 				counter-increment: item;
-				float: left;
-				margin-right: 5px;
+				width: 40px;
+				position: absolute;
+				top: 0;
+				left: -50px;
+				text-align: right;
+				color: #777;
 			}
 			#summary code {
 				background: #6F6;
