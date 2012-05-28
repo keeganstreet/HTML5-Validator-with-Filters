@@ -44,7 +44,7 @@
 #summary ol {
 	counter-reset: item;
 	margin: 0;
-	padding-left: 40px;
+	padding: 0 0 0 40px;
 }
 #summary ol ol {
 	margin-top: 6px;
