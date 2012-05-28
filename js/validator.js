@@ -81,7 +81,7 @@ $(document).ready(function() {
 				// Direct input and file upload need to be posted as multipart/form data
 
 				// Feature detect
-				if (!window.hasOwnProperty('FormData')) {
+				if (!window.FormData) {
 					alert('Oops! Your web browser does not support the FormData object, which means that the File Upload and Text Field options will not work. You can still use the Address (URL) option or upgrade to a modern browser such as Chrome or Firefox.');
 					return;
 				}
