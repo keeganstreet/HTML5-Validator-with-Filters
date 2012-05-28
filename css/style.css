@@ -1,3 +1,27 @@
+.hidden {
+	display: none;
+}
+#github {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: 0;
+}
+#github img {
+	border: 0;
+}
+#num-errors {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	font-size: 100px;
+	text-align: right;
+	font-weight: bold;
+	text-shadow: 0px 0px 10px #000;
+	color: #FFF;
+	display: none;
+	opacity: 0.5;
+}
 #welcome, #summary {
 	background: #BFB;
 	padding: 0.5em;
@@ -46,29 +70,5 @@
 }
 #summary code {
 	background: #6F6;
-}
-#num-errors {
-	position: fixed;
-	top: 20px;
-	right: 20px;
-	font-size: 100px;
-	text-align: right;
-	font-weight: bold;
-	text-shadow: 0px 0px 10px #000;
-	color: #FFF;
-	display: none;
-	opacity: 0.5;
-}
-.hidden {
-	display: none;
-}
-#github {
-	position: absolute;
-	top: 0;
-	right: 0;
-	border: 0;
-}
-#github img {
-	border: 0;
 }
 
