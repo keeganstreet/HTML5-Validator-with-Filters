@@ -39,7 +39,10 @@ $(document).ready(function() {
 
 				// Load script
 				$index.filter('script').each(function() {
-					var src = nuURL + $(this).attr('src');
+					var src = $(this).attr('src');
+					if (src.substr(0, 7) !== 'http://') {
+						src = nuURL + src;
+					}
 					$.getScript(src, function() {
 						// Initialise validator.nu script
 						if (typeof reboot === 'function') {
