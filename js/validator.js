@@ -46,7 +46,9 @@ $(document).ready(function() {
 					$.getScript(src, function() {
 						// Initialise validator.nu script
 						if (typeof reboot === 'function') {
-							reboot();
+							try {
+								reboot();
+							} catch (e) { }
 						}
 					});
 				});
@@ -121,7 +123,9 @@ $(document).ready(function() {
 
 				// Initialise validator.nu script
 				if (typeof reboot === 'function') {
-					reboot();
+					try {
+						reboot();
+					} catch (e) { }
 				}
 
 				setupForm();
