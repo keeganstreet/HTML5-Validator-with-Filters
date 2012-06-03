@@ -2,3 +2,4 @@ Some HTML errors are outside of the control of web developers. For example some 
 
 The validation for this service is completely handled by Validator.nu. The validator is loaded with AJAX and filtering is added in as a layer on top with JavaScript. HTML5 local storage is used to remember your filtering preferences so you don't need to re-apply the same filters on every page.
 
+To learn more, read the blog post [Filtering HTML5 Validator Errors](http://keegan.st/2012/05/28/filtering-html5-validator-errors/).
