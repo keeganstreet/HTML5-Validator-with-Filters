@@ -1,10 +1,13 @@
 .hidden {
 	display: none;
 }
+#validator-nu > h1 {
+	margin-left: 70px;
+}
 #github {
 	position: absolute;
 	top: 0;
-	right: 0;
+	left: 0;
 	border: 0;
 }
 #github img {
